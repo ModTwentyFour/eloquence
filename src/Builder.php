@@ -2,6 +2,7 @@
 
 namespace Sofa\Eloquence;
 
+use Illuminate\Support\Str;
 use Sofa\Eloquence\Searchable\Column;
 use Illuminate\Database\Query\Expression;
 use Sofa\Hookable\Builder as HookableBuilder;
@@ -71,7 +72,7 @@ class Builder extends HookableBuilder
     public function search($query, $columns = null, $fulltext = true, $threshold = null)
     {
         if (is_bool($columns)) {
-            list($fulltext, $columns) = [$columns, []];
+            [$fulltext, $columns] = [$columns, []];
         }
 
         $parser = static::$parser->make();
@@ -166,7 +167,7 @@ class Builder extends HookableBuilder
         $cases = $bindings = [];
 
         foreach ($columns as $column) {
-            list($cases[], $binding) = $this->buildCase($column, $words);
+            [$cases[], $binding] = $this->buildCase($column, $words);
 
             $bindings = array_merge_recursive($bindings, $binding);
         }
@@ -393,7 +394,7 @@ class Builder extends HookableBuilder
      */
     protected function isLeftMatching($word)
     {
-        return ends_with($word, '*');
+        return Str::endsWith($word, '*');
     }
 
     /**
@@ -404,7 +405,7 @@ class Builder extends HookableBuilder
      */
     protected function isWildcard($word)
     {
-        return ends_with($word, '*') && starts_with($word, '*');
+        return Str::endsWith($word, '*') && Str::startsWith($word, '*');
     }
 
     /**
@@ -445,7 +446,7 @@ class Builder extends HookableBuilder
         // use to build select and where clauses with correct table prefixes.
         foreach ($mappings as $mapping => $weight) {
             if (strpos($mapping, '.') !== false) {
-                list($relation, $column) = $this->model->parseMappedColumn($mapping);
+                [$relation, $column] = $this->model->parseMappedColumn($mapping);
 
                 $related = $joiner->leftJoin($relation);
 
@@ -498,7 +499,7 @@ class Builder extends HookableBuilder
         }
 
         if (!is_array($relations)) {
-            list($relations, $type) = [func_get_args(), 'inner'];
+            [$relations, $type] = [func_get_args(), 'inner'];
         }
 
         foreach ($relations as $relation) {
