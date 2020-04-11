@@ -1,0 +1,57 @@
+{
+    "name": "c10ne/eloquence",
+    "description": "Flexible Searchable, Mappable, Metable, Validation and more extensions for Laravel Eloquent ORM.",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/jarektkaczyk/eloquence/issues",
+        "source": "https://github.com/jarektkaczyk/eloquence"
+    },
+    "keywords": [
+        "laravel",
+        "eloquent",
+        "metable",
+        "searchable",
+        "mappable",
+        "mutable"
+    ],
+    "authors": [
+        {
+            "name": "Jarek Tkaczyk",
+            "email": "jarek@softonsofa.com",
+            "homepage": "http://softonsofa.com/",
+            "role": "Developer"
+        },
+        {
+            "name": "Ivan Krkotic",
+            "email": "ivan@mod24.com",
+            "role": "Backend Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "illuminate/database": "^5.5|^6.0|^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.5.0",
+        "squizlabs/php_codesniffer": "2.3.3",
+        "mockery/mockery": "0.9.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sofa\\Eloquence\\": "src",
+            "Sofa\\Hookable\\": "src1"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sofa\\Eloquence\\Tests\\": "tests"
+        }
+    },
+    "minimum-stability": "stable",
+    "scripts": {
+        "test": "phpunit"
+    }
+}
