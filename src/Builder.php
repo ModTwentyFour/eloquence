@@ -72,7 +72,7 @@ class Builder extends HookableBuilder
     public function search($query, $columns = null, $fulltext = true, $threshold = null)
     {
         if (is_bool($columns)) {
-            [$fulltext, $columns] = [$columns, []];
+            list($fulltext, $columns) = [$columns, []];
         }
 
         $parser = static::$parser->make();
@@ -103,12 +103,12 @@ class Builder extends HookableBuilder
         $columns = $this->joinForSearch($mappings, $subquery);
 
         $threshold = (is_null($threshold))
-                        ? array_sum($columns->getWeights()) / 4
-                        : (float) $threshold;
+            ? array_sum($columns->getWeights()) / 4
+            : (float) $threshold;
 
         $subquery->select($this->model->getTable() . '.*')
-                 ->from($this->model->getTable())
-                 ->groupBy($this->model->getQualifiedKeyName());
+            ->from($this->model->getTable())
+            ->groupBy($this->model->getQualifiedKeyName());
 
         $this->addSearchClauses($subquery, $columns, $words, $threshold);
 
@@ -167,7 +167,7 @@ class Builder extends HookableBuilder
         $cases = $bindings = [];
 
         foreach ($columns as $column) {
-            [$cases[], $binding] = $this->buildCase($column, $words);
+            list($cases[], $binding) = $this->buildCase($column, $words);
 
             $bindings = array_merge_recursive($bindings, $binding);
         }
@@ -251,9 +251,9 @@ class Builder extends HookableBuilder
 
                 $this->query->addBinding($bindings, 'select');
 
-            // if where is not to be moved onto the subquery, let's increment
-            // binding key appropriately, so we can reliably move binding
-            // for the next where clauses in the loop that is running.
+                // if where is not to be moved onto the subquery, let's increment
+                // binding key appropriately, so we can reliably move binding
+                // for the next where clauses in the loop that is running.
             } else {
                 $bindingKey += $bindingsCount;
             }
@@ -298,8 +298,8 @@ class Builder extends HookableBuilder
     protected function isHasWhere($where, $type)
     {
         return $type === 'basic'
-                && $where['column'] instanceof Expression
-                && $where['value'] instanceof Expression;
+            && $where['column'] instanceof Expression
+            && $where['value'] instanceof Expression;
     }
 
     /**
@@ -446,7 +446,7 @@ class Builder extends HookableBuilder
         // use to build select and where clauses with correct table prefixes.
         foreach ($mappings as $mapping => $weight) {
             if (strpos($mapping, '.') !== false) {
-                [$relation, $column] = $this->model->parseMappedColumn($mapping);
+                list($relation, $column) = $this->model->parseMappedColumn($mapping);
 
                 $related = $joiner->leftJoin($relation);
 
@@ -499,7 +499,7 @@ class Builder extends HookableBuilder
         }
 
         if (!is_array($relations)) {
-            [$relations, $type] = [func_get_args(), 'inner'];
+            list($relations, $type) = [func_get_args(), 'inner'];
         }
 
         foreach ($relations as $relation) {
