@@ -124,7 +124,7 @@ class Builder extends EloquentBuilder
      */
     public function where($column, $operator = null, $value = null, $boolean = 'and')
     {
-        if (!in_array(strtolower($operator), $this->operators, true)) {
+        if (!in_array(strtolower($operator), $this->operators, true) && !($column instanceof Closure)) {
             if ($column instanceof Closure && is_null($operator)) {
                 $column($query = $this->model->newQueryWithoutRelationships());
 
