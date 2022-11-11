@@ -101,7 +101,7 @@ class Parser implements ParserContract
      * @param  string $query
      * @return array
      */
-    protected function splitString($query)
+    protected function splitString($query = '')
     {
         preg_match_all('/(?<=")[\w ][^"]+(?=")|(?<=\s|^)[^\s"]+(?=\s|$)/u', $query, $matches);
 
