@@ -122,7 +122,7 @@ class Builder extends EloquentBuilder
      * @param  string $boolean
      * @return $this
      */
-    public function where($column, $operator = '', $value = null, $boolean = 'and')
+    public function where($column, $operator = null, $value = null, $boolean = 'and')
     {
         if (!in_array(strtolower($operator), $this->operators, true) && !($column instanceof Closure)) {
             if ($column instanceof Closure && is_null($operator)) {
