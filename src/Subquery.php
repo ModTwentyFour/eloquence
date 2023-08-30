@@ -11,24 +11,24 @@ class Subquery extends Expression
     /**
      * Query builder instance.
      *
-     * @var \Illuminate\Database\Query\Builder
+     * @var \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder
      */
-    protected $query;
+    protected QueryBuilder $query;
 
     /**
      * Alias for the subquery.
      *
-     * @var string
+     * @var ?string
      */
-    protected $alias;
+    protected ?string $alias;
 
     /**
      * Create new subquery instance.
      *
-     * @param \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder
-     * @param string $alias
+     * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+     * @param string|null $alias
      */
-    public function __construct($query, $alias = null)
+    public function __construct(EloquentBuilder|QueryBuilder $query, string $alias = null)
     {
         if ($query instanceof EloquentBuilder) {
             $query = $query->getQuery();
@@ -54,17 +54,17 @@ class Subquery extends Expression
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public function getQuery()
+    public function getQuery(): EloquentBuilder|QueryBuilder
     {
         return $this->query;
     }
 
     /**
-     * Evaluate query as string.
-     *
-     * @return string
+     * Get the value of the expression.
+     * @param Grammar $grammar
+     * @return float|int|string
      */
-    public function getValue()
+    public function getValue(Grammar $grammar)
     {
         $sql = '('.$this->query->toSql().')';
 
@@ -82,7 +82,7 @@ class Subquery extends Expression
      *
      * @return string
      */
-    public function getAlias()
+    public function getAlias(): ?string
     {
         return $this->alias;
     }
@@ -90,10 +90,10 @@ class Subquery extends Expression
     /**
      * Set subquery alias.
      *
-     * @param  string $alias
+     * @param string $alias
      * @return $this
      */
-    public function setAlias($alias)
+    public function setAlias(string $alias): static
     {
         $this->alias = $alias;
 
@@ -103,22 +103,22 @@ class Subquery extends Expression
     /**
      * Pass property calls to the underlying builder.
      *
-     * @param  string $property
+     * @param string $property
      * @param  mixed  $value
-     * @return mixed
+     * @return void
      */
-    public function __set($property, $value)
+    public function __set(string $property, mixed $value): void
     {
-        return $this->query->{$property} = $value;
+        $this->query->{$property} = $value;
     }
 
     /**
      * Pass property calls to the underlying builder.
      *
-     * @param  string $property
+     * @param string $property
      * @return mixed
      */
-    public function __get($property)
+    public function __get(string $property): mixed
     {
         return $this->query->{$property};
     }
@@ -126,11 +126,11 @@ class Subquery extends Expression
     /**
      * Pass method calls to the underlying builder.
      *
-     * @param  string $method
-     * @param  array  $params
+     * @param string $method
+     * @param array $params
      * @return mixed
      */
-    public function __call($method, $params)
+    public function __call(string $method, array $params): mixed
     {
         return call_user_func_array([$this->query, $method], $params);
     }
