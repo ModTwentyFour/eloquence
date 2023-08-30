@@ -2,9 +2,10 @@
 
 namespace Sofa\Eloquence;
 
-use Illuminate\Database\Query\Expression;
-use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Grammar;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Query\Expression;
 
 class Subquery extends Expression
 {
